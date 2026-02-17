@@ -176,12 +176,26 @@
         <p>Browse our full range of streetwear essentials.</p>
     </div>
     <div class="product-grid">
-        <div id="products-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
-            <!-- dynamic cards go here -->
-        </div>
-
-        <div id="loading" class="text-center py-12 text-gray-400">Loading drops from Printify...</div>
-        <div id="error" class="hidden text-center py-12 text-red-500"></div>
+        <!-- Replace your old product grid/section with this -->
+        <section class="py-16 px-4">
+          <h1 class="text-5xl font-bold text-center text-red-500 mb-12 tracking-wide">SHOP DROPS</h1>
+          
+          <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            <!-- Dynamic product cards will load here -->
+          </div>
+          
+          <div id="loading" class="text-center py-20 text-gray-400 text-2xl">
+            Loading fresh drops from Printify...
+          </div>
+          
+          <div id="error" class="hidden text-center py-20 text-red-500 text-2xl">
+            <!-- Error message goes here -->
+          </div>
+          
+          <div id="no-products" class="hidden text-center py-20 text-xl text-gray-300">
+            No drops available yet – add some fire in Printify 🔥
+  </div>
+</section>
     </div>
     <div class="footer">
         <p>&copy; 2025 SNAKE. All rights reserved. <a href="#contact">Contact Us</a> | <a href="#terms">Terms</a></p>
@@ -261,5 +275,72 @@
 
         window.addEventListener('DOMContentLoaded', fetchProducts);
     </script>
+
+    <script>
+    async function loadShopProducts() {
+      const grid = document.getElementById('products-grid');
+      const loading = document.getElementById('loading');
+      const errorDiv = document.getElementById('error');
+      const noProducts = document.getElementById('no-products');
+    
+      try {
+        const res = await fetch('/api/products');
+        if (!res.ok) throw new Error('API fetch failed');
+    
+        const products = await res.json();
+    
+        loading.style.display = 'none';
+    
+        if (!products || products.length === 0) {
+          noProducts.classList.remove('hidden');
+          return;
+        }
+    
+        grid.innerHTML = ''; // Clear any leftovers
+    
+        products.forEach(product => {
+          const variant = product.variants?.[0] || {};
+          const price = (variant.price / 100 || 0).toFixed(2);
+          const images = product.images || [];
+          const mainImg = images.find(img => img.is_default) || images[0];
+          const imgSrc = mainImg?.src || 'https://via.placeholder.com/400x500?text=No+Image';
+    
+          // Optional: short clean description (truncate if long)
+          let shortDesc = (product.description || 'Dark edge streetwear drop.')
+            .replace(/::/g, ' • ')
+            .split('\n')[0] // first line only, or keep full if you prefer
+            .substring(0, 120) + '...';
+    
+          const card = `
+            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-red-600 transition shadow-lg shadow-black/40">
+              <img src="${imgSrc}" alt="${product.title}"
+                   class="w-full h-64 md:h-80 object-cover border-b-4 border-gray-700">
+              <div class="p-6">
+                <h3 class="text-xl md:text-2xl font-bold mb-3 line-clamp-2">${product.title}</h3>
+                <p class="text-red-500 text-3xl font-bold mb-4">$${price}</p>
+                <p class="text-gray-400 text-base mb-6 line-clamp-3">${shortDesc}</p>
+                <a href="#" 
+                   class="block bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-lg text-center text-lg transition">
+                  Add to Cart / View
+                </a>
+              </div>
+            </div>
+          `;
+    
+          grid.innerHTML += card;
+        });
+    
+      } catch (err) {
+        loading.style.display = 'none';
+        errorDiv.textContent = 'Couldn\'t load drops right now – check back soon 😢';
+        errorDiv.classList.remove('hidden');
+        console.error('Shop load error:', err);
+      }
+    }
+    
+    // Load when page opens
+    document.addEventListener('DOMContentLoaded', loadShopProducts);
+    </script>    
 </body>
 </html>
+
