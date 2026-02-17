@@ -277,75 +277,59 @@
     </script>
 
     <script>
-    async function loadShopProducts() {
-      const raw = await res.json();
-        let products = raw.data || raw;  // Try .data first, fallback to direct if array
+    <script>
+    async function fetchProducts() {
+      const container = document.getElementById('products-container');
+      const loading = document.getElementById('loading');
+      const errorDiv = document.getElementById('error');
     
-        // Extra safety: force array
-        if (!Array.isArray(products)) {
-          products = [];
-        }
+      try {
+        const res = await fetch('/api/products');
+        if (!res.ok) throw new Error('API route failed');
+    
+        const products = await res.json();
     
         loading.style.display = 'none';
-        errorDiv.classList.add('hidden');
-        noProducts.classList.add('hidden');
     
-        if (products.length === 0) {
-          noProducts.classList.remove('hidden');
+        if (!products || products.length === 0) {
+          container.innerHTML = '<p class="col-span-full text-center text-xl">No products yet — add some in Printify 🔥</p>';
           return;
         }
     
-        grid.innerHTML = '';
+        container.innerHTML = '';
     
-        products.forEach(product => {
-          // Your existing card code here...
-          // Make sure to handle missing fields gracefully
-          const variant = product.variants?.[0] || {};
-          const price = (variant.price / 100 || 0).toFixed(2);
-          const images = product.images || [];
-          const mainImg = images.find(img => img.is_default) || images[0] || {};
-          const imgSrc = mainImg.src || 'https://via.placeholder.com/400x500?text=Drop+Coming+Soon';
-    
-          // Clean title & desc
-          const title = product.title || 'Untitled Drop';
-          let shortDesc = (product.description || 'Streetwear essential with dark edge.')
-            .replace(/::/g, ' • ')
-            .replace(/\n+/g, ' ')
-            .trim()
-            .substring(0, 100) + '...';
+        products.forEach(p => {
+          const variant = p.variants?.[0] || {};
+          const price = (variant.price / 100).toFixed(2); // Printify prices are in cents
+          const imgSrc = p.images?.[0]?.src || 'https://via.placeholder.com/400x500?text=No+Image';
     
           const card = `
-            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-red-600 transition shadow-lg shadow-black/40">
-              <img src="${imgSrc}" alt="${title}"
-                   class="w-full h-48 md:h-64 object-cover ring-2 ring-red-900/60 ring-offset-2 ring-offset-gray-950 hover:ring-red-600/80 transition duration-300">
-              <div class="p-6">
-                <h3 class="text-xl md:text-2xl font-bold mb-3 line-clamp-2">${title}</h3>
-                <p class="text-red-500 text-3xl font-bold mb-4">$${price}</p>
-                <p class="text-gray-400 text-base mb-6 line-clamp-3">${shortDesc}</p>
-                <button onclick="alert('Added! Cart coming soon 🔥')" 
-                        class="block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-lg text-center text-lg transition">
+            <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden hover:border-red-600 transition">
+              <img src="${imgSrc}" alt="${p.title}" class="w-full h-80 object-cover">
+              <div class="p-4">
+                <h3 class="font-bold text-lg mb-1">${p.title}</h3>
+                <p class="text-red-500 text-xl font-semibold">$${price}</p>
+                <button class="mt-4 w-full bg-red-600 hover:bg-red-700 py-3 rounded font-medium">
                   Add to Cart
                 </button>
               </div>
             </div>
           `;
-    
-          grid.innerHTML += card;
+          container.innerHTML += card;
         });
-    
       } catch (err) {
         loading.style.display = 'none';
-        errorDiv.textContent = 'Couldn\'t load drops right now – check back soon 😢';
+        errorDiv.textContent = 'Could not load products — check console or try later.';
         errorDiv.classList.remove('hidden');
-        console.error('Shop load error:', err);
+        console.error(err);
       }
     }
     
-    // Load when page opens
-    document.addEventListener('DOMContentLoaded', loadShopProducts);
-    </script>    
+    window.addEventListener('DOMContentLoaded', fetchProducts);
+    </script>
 </body>
 </html>
+
 
 
 
