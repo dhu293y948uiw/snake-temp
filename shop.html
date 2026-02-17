@@ -6,45 +6,30 @@
   <title>Shop - SNAKE Streetwear</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-bg">
 
-  <header>
-    <nav class="nav">
-      <a href="index.html">Home</a> |
-      <a href="shop.html">Shop</a> |
-      <a href="collections.html">Collections</a> |
-      <a href="about.html">About</a> |
+  <!-- Minimal nav to match premium dark look -->
+  <header class="top-nav">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="collections.html">Collections</a>
+      <a href="about.html">About</a>
       <a href="Policies.html">Policies</a>
     </nav>
   </header>
 
-  <main>
-    <section class="shop-section">
-      <h1>Shop SNAKE</h1>
-      <p>Browse our full range of streetwear essentials.</p>
+  <main class="shop-hero">
+    <h1>SHOP</h1>
+    <p class="tagline">Streetwear with a Dark Edge</p>
 
-      <!-- This is where Printify products will appear once JS is working -->
-      <div id="products-container" class="product-grid">
-        <!-- Example placeholder items – remove or replace with real dynamic content -->
-        <div class="product-card">
-          <h3>Viper Hoodie</h3>
-          <p>Oversized, premium cotton</p>
-          <p class="price">$120</p>
-        </div>
-
-        <div class="product-card">
-          <h3>Cobra Tee</h3>
-          <p>Graphic print, street fit</p>
-          <p class="price">$45</p>
-        </div>
-
-        <!-- Add more placeholders or let JS populate this -->
-      </div>
-    </section>
+    <!-- Dynamic products will be inserted here by api/products.js -->
+    <div id="products-container" class="products-grid">
+      <div class="loading">Loading drops...</div>
+    </div>
   </main>
 
-  <!-- If you have api/products.js ready, add it here -->
-  <!-- <script src="api/products.js"></script> -->
-
+  <!-- Load your existing dynamic script -->
+  <script src="api/products.js"></script>
 </body>
 </html>
