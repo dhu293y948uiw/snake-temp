@@ -294,7 +294,7 @@
     
         const featuredHTML = `
           <img src="${imgSrc}" alt="${product.title}" class="w-full h-96 md:h-[600px] object-cover">
-          <div class="p-8">
+          <div class="w-full h-56 md:h-72 lg:h-96 object-cover ring-4 ring-red-800/40 ring-offset-4 ring-offset-black hover:ring-red-500/60 transition duration-300">
             <h3 class="text-3xl font-bold mb-3">${product.title}</h3>
             <p class="text-red-500 text-4xl font-bold mb-6">$${price}</p>
             <p class="text-gray-300 mb-8 line-clamp-3">${product.description || 'Streetwear with a dark edge. Limited drop.'}</p>
@@ -435,4 +435,5 @@
 </body>
 
 </html>
+
 
