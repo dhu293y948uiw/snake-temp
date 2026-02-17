@@ -314,7 +314,7 @@
           const card = `
             <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-red-600 transition shadow-lg shadow-black/40">
               <img src="${imgSrc}" alt="${product.title}"
-                   class="w-full h-64 md:h-80 object-cover border-b-4 border-gray-700">
+                   class="w-full h-48 md:h-64 object-cover ring-2 ring-red-900/50 ring-offset-2 ring-offset-gray-900 hover:ring-red-600/70 transition"
               <div class="p-6">
                 <h3 class="text-xl md:text-2xl font-bold mb-3 line-clamp-2">${product.title}</h3>
                 <p class="text-red-500 text-3xl font-bold mb-4">$${price}</p>
@@ -343,4 +343,5 @@
     </script>    
 </body>
 </html>
+
 
