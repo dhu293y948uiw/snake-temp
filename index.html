@@ -212,7 +212,6 @@
 <body>
     <div class="header">
         <h1>SNAKE</h1>
-        <p>Streetwear with a Dark Edge</p>
         <a href="./shop.html" class="cta-button">Shop Now</a>
     </div>
     <div class="nav">
@@ -224,47 +223,71 @@
         </ul>
     </div>
     <div class="product-grid">
-        <div class="product-card">
-            <div class="carousel" data-images='[
-                "https://media.discordapp.net/attachments/1147674128451637260/1426803028295417967/front.png?ex=68ec8d5e&is=68eb3bde&hm=4f93258198248de01fe32656143d067866a75c2dcdfdf134ab532f766d384a75&=&format=webp&quality=lossless",
-                "https://media.discordapp.net/attachments/1147674128451637260/1426803027884507158/back.png?ex=68ec8d5e&is=68eb3bde&hm=c7e33af40a08ebb8c1ca2ae8010691a193838ec7e881043f46d15240167f6b99&=&format=webp&quality=lossless"
-            ]'>
-                <img src="https://media.discordapp.net/attachments/1147674128451637260/1426803028295417967/front.png?ex=68ec8d5e&is=68eb3bde&hm=4f93258198248de01fe32656143d067866a75c2dcdfdf134ab532f766d384a75&=&format=webp&quality=lossless" class="active" alt="Viper Hoodie">
-                <img src="https://media.discordapp.net/attachments/1147674128451637260/1426803027884507158/back.png?ex=68ec8d5e&is=68eb3bde&hm=c7e33af40a08ebb8c1ca2ae8010691a193838ec7e881043f46d15240167f6b99&=&format=webp&quality=lossless" alt="Viper Hoodie">
-                <button class="carousel-btn prev">←</button>
-                <button class="carousel-btn next">→</button>
-            </div>
-            <h3>Target Hoodie</h3>
-            <p>Oversized, premium cotton</p>
-            <p class="price">mockup only</p>
-        </div>
+        <section id="featured-drop" class="py-16 text-center">
+          <h2 class="text-4xl font-bold text-red-500 mb-8">Featured Drop</h2>
+          
+          <div id="featured-product" class="max-w-4xl mx-auto bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+            <div id="featured-loading" class="p-12 text-gray-400">Loading a random drop...</div>
+            <div id="featured-error" class="hidden p-12 text-red-500"></div>
+          </div>
+        </section>
     </div>
     <div class="footer">
         <p>&copy; 2025 SNAKE. All rights reserved. <a href="#contact">Contact Us</a> | <a href="./Policies.html">Policies</a></p>
     </div>
+
     <script>
-        document.querySelectorAll('.carousel').forEach(carousel => {
-            const images = carousel.querySelectorAll('img');
-            const prevBtn = carousel.querySelector('.prev');
-            const nextBtn = carousel.querySelector('.next');
-            let currentIndex = 0;
-
-            function showImage(index) {
-                images.forEach((img, i) => {
-                    img.classList.toggle('active', i === index);
-                });
-            }
-
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                showImage(currentIndex);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                showImage(currentIndex);
-            });
-        });
-    </script>
+    async function loadFeaturedProduct() {
+      const container = document.getElementById('featured-product');
+      const loading = document.getElementById('featured-loading');
+      const errorDiv = document.getElementById('featured-error');
+    
+      try {
+        const res = await fetch('/api/products');
+        if (!res.ok) throw new Error('Failed to fetch');
+    
+        const products = await res.json();
+    
+        loading.style.display = 'none';
+    
+        if (!products || products.length === 0) {
+          container.innerHTML = '<p class="p-12 text-xl">No drops available yet – check back soon 🔥</p>';
+          return;
+        }
+    
+        // Pick one completely at random
+        const randomIndex = Math.floor(Math.random() * products.length);
+        const product = products[randomIndex];
+    
+        const variant = product.variants?.[0] || {};
+        const price = (variant.price / 100).toFixed(2);
+        const imgSrc = product.images?.[0]?.src || 'https://via.placeholder.com/800x900?text=Featured+Drop';
+    
+        const featuredHTML = `
+          <img src="${imgSrc}" alt="${product.title}" class="w-full h-96 md:h-[600px] object-cover">
+          <div class="p-8">
+            <h3 class="text-3xl font-bold mb-3">${product.title}</h3>
+            <p class="text-red-500 text-4xl font-bold mb-6">$${price}</p>
+            <p class="text-gray-300 mb-8 line-clamp-3">${product.description || 'Streetwear with a dark edge. Limited drop.'}</p>
+            <a href="/shop.html" 
+               class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 rounded-lg text-xl">
+              Shop This Drop
+            </a>
+          </div>
+        `;
+    
+        container.innerHTML = featuredHTML;
+      } catch (err) {
+        loading.style.display = 'none';
+        errorDiv.textContent = 'Couldn\'t load featured drop right now 😢';
+        errorDiv.classList.remove('hidden');
+        console.error(err);
+      }
+    }
+    
+    // Run when page loads
+    document.addEventListener('DOMContentLoaded', loadFeaturedProduct);
+</script>
 </body>
+
 </html>
