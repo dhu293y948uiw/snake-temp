@@ -248,4 +248,116 @@ img[alt*="AOP"] {
   img[src*="printify"] {
     max-width: 260px !important;
   }
+  .dark-bg {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.top-nav {
+  background: rgba(0,0,0,0.8);
+  padding: 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-align: center;
+}
+
+.top-nav a {
+  color: #fff;
+  margin: 0 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.top-nav a:hover {
+  color: #ccc;
+}
+
+.shop-hero {
+  padding: 6rem 5% 4rem;
+  text-align: center;
+}
+
+.shop-hero h1 {
+  font-size: clamp(5rem, 12vw, 10rem);
+  margin-bottom: 1rem;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+}
+
+.tagline {
+  font-size: 1.8rem;
+  color: #aaa;
+  margin-bottom: 4rem;
+  font-style: italic;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  background: #000;
+  max-height: 420px; /* keeps hoodies from being massive */
+}
+
+.product-card h3 {
+  padding: 1.2rem 1rem 0.5rem;
+  font-size: 1.5rem;
+}
+
+.price {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 0 1rem 1rem;
+}
+
+.shop-now-btn {
+  display: block;
+  margin: 1rem auto 1.5rem;
+  padding: 0.9rem 2.5rem;
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.shop-now-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.loading {
+  font-size: 1.6rem;
+  color: #666;
+  text-align: center;
+  padding: 4rem 0;
+}
 }
