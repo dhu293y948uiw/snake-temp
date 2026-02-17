@@ -9,30 +9,42 @@
 <body>
 
   <header>
-    <h1>SNAKE</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="shop.html">Shop</a>
-      <a href="collections.html">Collections</a>
-      <a href="about.html">About</a>
+    <nav class="nav">
+      <a href="index.html">Home</a> |
+      <a href="shop.html">Shop</a> |
+      <a href="collections.html">Collections</a> |
+      <a href="about.html">About</a> |
       <a href="Policies.html">Policies</a>
     </nav>
   </header>
 
   <main>
     <section class="shop-section">
-      <h2>Our Products</h2>
-      
-      <!-- This is where api/products.js will insert the Printify products -->
-      <div id="products-grid" class="products-grid">
-        <!-- JS will populate this with <div class="product-card">...</div> elements -->
-        <p>Loading products from Printify...</p>
+      <h1>Shop SNAKE</h1>
+      <p>Browse our full range of streetwear essentials.</p>
+
+      <!-- This is where Printify products will appear once JS is working -->
+      <div id="products-container" class="product-grid">
+        <!-- Example placeholder items – remove or replace with real dynamic content -->
+        <div class="product-card">
+          <h3>Viper Hoodie</h3>
+          <p>Oversized, premium cotton</p>
+          <p class="price">$120</p>
+        </div>
+
+        <div class="product-card">
+          <h3>Cobra Tee</h3>
+          <p>Graphic print, street fit</p>
+          <p class="price">$45</p>
+        </div>
+
+        <!-- Add more placeholders or let JS populate this -->
       </div>
     </section>
   </main>
 
-  <!-- Load the script that fetches and displays Printify products -->
-  <script src="api/products.js"></script>
+  <!-- If you have api/products.js ready, add it here -->
+  <!-- <script src="api/products.js"></script> -->
 
 </body>
 </html>
