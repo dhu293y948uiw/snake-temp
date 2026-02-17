@@ -23,9 +23,17 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    res.status(200).json(data.data || data);  // .data is common in paginated responses
-  } catch (error) {
-    console.error('Products fetch failed:', error);
-    res.status(500).json({ error: 'Failed to load products from Printify' });
+    let products = data.data || data; // Try 'data' first
+
+    // Extra safety: if it's an object with 'data' nested deeper or direct array
+    if (Array.isArray(products)) {
+      // good
+    } else if (products && Array.isArray(products.data)) {
+      products = products.data;
+    } else {
+      products = [];
+    }
+
+    res.status(200).json(products);
   }
 }
