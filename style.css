@@ -198,3 +198,43 @@
   border-radius: 4px;
   display: inline-block;
 }
+
+img[src*="printify"],
+img[src*="mockup"],
+img[src*="product"],
+.product img,
+.shop-item img,
+.card img,
+.product-card img,
+.collections img,
+img[alt*="Hoodie"],
+img[alt*=" AOP"] {
+    max-width: 150px !important;     /* ← Change this number: 280–400px range looks good */
+    width: 80% !important;           /* or 100% if you want it to fill its container but capped */
+    height: auto !important;
+    object-fit: contain !important;  /* Keeps proportions, no stretching */
+    display: block !important;
+    margin: 20px auto !important;    /* Centers it with breathing room top/bottom */
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+/* Make sure the parent container doesn't force it huge */
+.product-card,
+.product-item,
+.shop-item,
+.card,
+.collections-grid > div,
+.grid-item {
+    max-width: 450px;                /* Optional: caps the whole card */
+    margin: 0 auto;
+    text-align: center;
+    padding: 15px;
+}
+
+/* Mobile adjustment */
+@media (max-width: 768px) {
+    img[src*="printify"] {
+        max-width: 260px !important;
+    }
+}
