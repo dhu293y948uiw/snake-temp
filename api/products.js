@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
         // Transform into a clean, frontend-friendly shape
         const products = (data.data || [])
-            .filter(p => p.visible) // only published products
+            const products = (data.data || []).map(p => { // only published products
             .map(p => {
                 // Get first variant price (in cents → dollars)
                 const price = p.variants?.[0]?.price
