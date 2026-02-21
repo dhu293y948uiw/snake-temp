@@ -19,74 +19,11 @@
         <h1>Collections</h1>
         <p>Explore our curated streetwear drops.</p>
     </div>
-    <div class="collection">
-        <h2>Venom Drop</h2>
-        <p>Bold designs inspired by the raw energy of the streets.</p>
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="carousel" data-images='[
-                    "https://via.placeholder.com/250x250?text=Viper+Hoodie+Front",
-                    "https://via.placeholder.com/250x250?text=Viper+Hoodie+Back"
-                ]'>
-                    <img src="https://via.placeholder.com/250x250?text=Viper+Hoodie+Front" class="active" alt="Viper Hoodie">
-                    <img src="https://via.placeholder.com/250x250?text=Viper+Hoodie+Back" alt="Viper Hoodie">
-                    <button class="carousel-btn prev">←</button>
-                    <button class="carousel-btn next">→</button>
-                </div>
-                <h3>Viper Hoodie</h3>
-                <p>Oversized, premium cotton</p>
-                <p class="price">$120</p>
-            </div>
-            <div class="product-card">
-                <div class="carousel" data-images='[
-                    "https://via.placeholder.com/250x250?text=Cobra+Tee+Front",
-                    "https://via.placeholder.com/250x250?text=Cobra+Tee+Back"
-                ]'>
-                    <img src="https://via.placeholder.com/250x250?text=Cobra+Tee+Front" class="active" alt="Cobra Tee">
-                    <img src="https://via.placeholder.com/250x250?text=Cobra+Tee+Back" alt="Cobra Tee">
-                    <button class="carousel-btn prev">←</button>
-                    <button class="carousel-btn next">→</button>
-                </div>
-                <h3>Cobra Tee</h3>
-                <p>Graphic print, street fit</p>
-                <p class="price">$45</p>
-            </div>
-        </div>
-    </div>
-    <div class="collection">
-        <h2>Scales Collection</h2>
-        <p>Minimalist streetwear with a sleek, modern edge.</p>
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="carousel" data-images='[
-                    "https://via.placeholder.com/250x250?text=Python+Cap+Front",
-                    "https://via.placeholder.com/250x250?text=Python+Cap+Side"
-                ]'>
-                    <img src="https://via.placeholder.com/250x250?text=Python+Cap+Front" class="active" alt="Python Cap">
-                    <img src="https://via.placeholder.com/250x250?text=Python+Cap+Side" alt="Python Cap">
-                    <button class="carousel-btn prev">←</button>
-                    <button class="carousel-btn next">→</button>
-                </div>
-                <h3>Python Cap</h3>
-                <p>Embroidered logo</p>
-                <p class="price">$35</p>
-            </div>
-            <div class="product-card">
-                <div class="carousel" data-images='[
-                    "https://via.placeholder.com/250x250?text=Rattler+Jacket+Front",
-                    "https://via.placeholder.com/250x250?text=Rattler+Jacket+Back"
-                ]'>
-                    <img src="https://via.placeholder.com/250x250?text=Rattler+Jacket+Front" class="active" alt="Rattler Jacket">
-                    <img src="https://via.placeholder.com/250x250?text=Rattler+Jacket+Back" alt="Rattler Jacket">
-                    <button class="carousel-btn prev">←</button>
-                    <button class="carousel-btn next">→</button>
-                </div>
-                <h3>Rattler Jacket</h3>
-                <p>Heavy-duty street style</p>
-                <p class="price">$200</p>
-            </div>
-        </div>
-    </div>
+    <div id="collections-container">
+    <p class="loading-state">Loading collections...</p>
+</div>
+<script src="./js/products.js"></script>
+<script>loadCollections('collections-container');</script>
     <div class="footer">
         <p>&copy; 2025 SnakeStrike. All rights reserved. <a href="#contact">Contact Us</a> | <a href="#terms">Terms</a></p>
     </div>
@@ -117,3 +54,4 @@
 </body>
 
 </html>
+
