@@ -21,22 +21,11 @@
             <li><a href="./about.html">About</a></li>
         </ul>
     </div>
-    <div class="product-grid">
-        <div class="product-card">
-            <div class="carousel" data-images='[
-                "https://media.discordapp.net/attachments/1147674128451637260/1426803028295417967/front.png?ex=68ec8d5e&is=68eb3bde&hm=4f93258198248de01fe32656143d067866a75c2dcdfdf134ab532f766d384a75&=&format=webp&quality=lossless",
-                "https://media.discordapp.net/attachments/1147674128451637260/1426803027884507158/back.png?ex=68ec8d5e&is=68eb3bde&hm=c7e33af40a08ebb8c1ca2ae8010691a193838ec7e881043f46d15240167f6b99&=&format=webp&quality=lossless"
-            ]'>
-                <img src="https://media.discordapp.net/attachments/1147674128451637260/1426803028295417967/front.png?ex=68ec8d5e&is=68eb3bde&hm=4f93258198248de01fe32656143d067866a75c2dcdfdf134ab532f766d384a75&=&format=webp&quality=lossless" class="active" alt="Viper Hoodie">
-                <img src="https://media.discordapp.net/attachments/1147674128451637260/1426803027884507158/back.png?ex=68ec8d5e&is=68eb3bde&hm=c7e33af40a08ebb8c1ca2ae8010691a193838ec7e881043f46d15240167f6b99&=&format=webp&quality=lossless" alt="Viper Hoodie">
-                <button class="carousel-btn prev">←</button>
-                <button class="carousel-btn next">→</button>
-            </div>
-            <h3>Target Hoodie</h3>
-            <p>Oversized, premium cotton</p>
-            <p class="price">mockup only</p>
-        </div>
-    </div>
+    <div class="product-grid" id="featured-grid">
+    <p class="loading-state">Loading products...</p>
+</div>
+<script src="./js/products.js"></script>
+<script>loadProducts('featured-grid', 3);</script>
     <div class="footer">
         <p>&copy; 2025 SNAKE. All rights reserved. <a href="#contact">Contact Us</a> | <a href="./Policies.html">Policies</a></p>
     </div>
@@ -67,3 +56,4 @@
 </body>
 
 </html>
+
