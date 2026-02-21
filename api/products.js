@@ -3,7 +3,7 @@
 // Deploy this file to your repo at /api/products.js
 // Set PRINTIFY_API_KEY and PRINTIFY_SHOP_ID in Vercel Environment Variables.
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     // Allow your frontend to call this
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
         // Transform into a clean, frontend-friendly shape
         const products = (data.data || [])
-            const products = (data.data || []).map(p => { // only published products
+            .filter(p => p.visible) // only published products
             .map(p => {
                 // Get first variant price (in cents → dollars)
                 const price = p.variants?.[0]?.price
