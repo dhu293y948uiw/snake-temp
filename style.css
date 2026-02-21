@@ -63,9 +63,9 @@ body {
     font-family: 'Heartless', sans-serif;
 }
 .header h1 {
-    font-size: 4em;
+    font-size: 10em;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 5px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
 }
 .header p {
