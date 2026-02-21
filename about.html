@@ -1,31 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - SNAKE Streetwear</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnakeStrike - About</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+        }
+        /* Navigation */
+        .nav {
+            background-color: #000;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+        .nav ul li {
+            margin: 0 20px;
+        }
+        .nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .nav ul li a:hover {
+            color: #ccc;
+        }
+        /* About Section */
+        .about-section {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .about-section h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .about-section p {
+            color: #ccc;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .about-section img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin: 20px 0;
+            border: 1px solid #444;
+        }
+        /* Footer */
+        .footer {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+            color: #ccc;
+            font-size: 0.9em;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #ccc;
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-section h1 {
+                font-size: 2em;
+            }
+            .nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nav ul li {
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <header>
-    <nav class="nav">
-      <a href="index.html">Home</a> |
-      <a href="shop.html">Shop</a> |
-      <a href="collections.html">Collections</a> |
-      <a href="about.html">About</a> |
-      <a href="Policies.html">Policies</a>
-    </nav>
-  </header>
-
-  <main>
-    <h1>About SNAKE</h1>
-    <p>SnakeStrike was born in 2025 from the streets, where style meets attitude. Inspired by the raw energy of urban culture and the sleek danger of serpents, we craft streetwear that’s bold, minimalist, and unapologetic.</p>
-    
-    <p>Our mission is to redefine street fashion with high-quality materials and designs that slither into the spotlight. Every piece is made for those who move with purpose and own their edge.</p>
-    
-    <p>Join the SNAKE movement and wear the streets.</p>
-  </main>
-
+    <div class="nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="collections.html">Collections</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+    <div class="about-section">
+        <h1>About SnakeStrike</h1>
+        <p>SnakeStrike was born in 2025 from the streets, where style meets attitude. Inspired by the raw energy of urban culture and the sleek danger of serpents, we craft streetwear that’s bold, minimalist, and unapologetic.</p>
+        <p>Our mission is to redefine street fashion with high-quality materials and designs that slither into the spotlight. Every piece is made for those who move with purpose and own their edge.</p>
+        <img src="https://via.placeholder.com/600x400?text=SnakeStrike+Brand" alt="SnakeStrike Brand Image">
+        <p>Join the SnakeStrike movement and wear the streets.</p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 SnakeStrike. All rights reserved. <a href="#contact">Contact Us</a> | <a href="#terms">Terms</a></p>
+    </div>
 </body>
 </html>
