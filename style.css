@@ -74,8 +74,7 @@ body {
     -webkit-text-stroke: 2px grey;
     font-family: 'MingGothic', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 10px;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 1),
+    letter-spacing: 20px;
 }
 .header p {
     font-size: 1.3em;
