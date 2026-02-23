@@ -25,6 +25,8 @@ function buildProductCard(product) {
         img.src = src;
         img.alt = product.title;
         if (i === 0) img.classList.add('active');
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', () => { window.location.href = './product.html?id=' + product.id; });
         carousel.appendChild(img);
     });
 
@@ -57,7 +59,12 @@ function buildProductCard(product) {
 
     // --- Info ---
     const title = document.createElement('h3');
-    title.textContent = product.title;
+    const titleLink = document.createElement('a');
+    titleLink.href = './product.html?id=' + product.id;
+    titleLink.textContent = product.title;
+    titleLink.style.color = '#fff';
+    titleLink.style.textDecoration = 'none';
+    title.appendChild(titleLink);
     card.appendChild(title);
 
     if (product.description) {
