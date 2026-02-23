@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Product</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="./collections.html">Collections</a></li>
+            <li><a href="./about.html">About</a></li>
+        </ul>
+        <div class="nav-right">
+            <span id="nav-auth"></span>
+            <a href="./cart.html" class="cart-nav-link">Cart <span id="cart-count" class="cart-badge" style="display:none;">0</span></a>
+        </div>
+    </div>
+
+    <div class="product-page-wrap" id="product-page-wrap">
+        <p class="loading-state">Loading product...</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 SNAKE. All rights reserved. <a href="./Policies.html">Policies</a></p>
+    </div>
+
+    <script type="module">
+        import "./js/auth.js";
+        import { addToCart } from "./js/cart.js";
+
+        const wrap = document.getElementById('product-page-wrap');
+
+        // Get product ID from URL
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
+
+        if (!productId) {
+            wrap.innerHTML = '<p class="error-state">No product specified.</p>';
+        } else {
+            loadProduct(productId);
+        }
+
+        async function loadProduct(id) {
+            try {
+                const res = await fetch('/api/products');
+                if (!res.ok) throw new Error('Failed to load products');
+                const data = await res.json();
+                const product = data.products.find(p => p.id === id);
+
+                if (!product) {
+                    wrap.innerHTML = '<p class="error-state">Product not found.</p>';
+                    return;
+                }
+
+                document.title = `Snake - ${product.title}`;
+                renderProduct(product);
+
+            } catch (err) {
+                console.error(err);
+                wrap.innerHTML = '<p class="error-state">Could not load product. Please try again.</p>';
+            }
+        }
+
+        function renderProduct(product) {
+            const images = product.images.length > 0
+                ? product.images
+                : ['https://via.placeholder.com/600x600?text=No+Image'];
+
+            const variantsHTML = product.variants && product.variants.length > 0
+                ? `<div class="product-page-variants">
+                    <label class="product-page-label">Size / Variant</label>
+                    <div class="variant-options" id="variant-options">
+                        ${product.variants.map((v, i) => `
+                            <button class="variant-option ${i === 0 ? 'active' : ''}" data-id="${v.id}" data-label="${v.label}" data-price="${v.price}">
+                                ${v.label}
+                            </button>
+                        `).join('')}
+                    </div>
+                   </div>`
+                : '';
+
+            wrap.innerHTML = `
+                <div class="product-page">
+
+                    <!-- Image Gallery -->
+                    <div class="product-gallery">
+                        <div class="gallery-main">
+                            <img id="gallery-main-img" src="${images[0]}" alt="${product.title}" />
+                        </div>
+                        ${images.length > 1 ? `
+                        <div class="gallery-thumbs">
+                            ${images.map((src, i) => `
+                                <img src="${src}" alt="${product.title}" class="gallery-thumb ${i === 0 ? 'active' : ''}" data-index="${i}" />
+                            `).join('')}
+                        </div>` : ''}
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="product-page-info">
+                        <p class="product-page-breadcrumb"><a href="./shop.html">Shop</a> / ${product.title}</p>
+                        <h1 class="product-page-title">${product.title}</h1>
+                        <p class="product-page-price" id="product-price">${product.price}</p>
+
+                        ${variantsHTML}
+
+                        <div class="product-page-qty">
+                            <label class="product-page-label">Quantity</label>
+                            <div class="qty-controls">
+                                <button class="qty-btn" id="qty-minus">−</button>
+                                <span class="qty-value" id="qty-value">1</span>
+                                <button class="qty-btn" id="qty-plus">+</button>
+                            </div>
+                        </div>
+
+                        <button class="product-add-btn" id="add-to-cart-btn">Add to Cart</button>
+                        <a href="./cart.html" class="product-view-cart-btn">View Cart</a>
+
+                        ${product.description ? `
+                        <div class="product-page-description">
+                            <h3>Description</h3>
+                            <p>${product.description.replace(/<[^>]+>/g, '')}</p>
+                        </div>` : ''}
+                    </div>
+                </div>
+            `;
+
+            // --- Thumbnail click ---
+            document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    document.getElementById('gallery-main-img').src = images[thumb.dataset.index];
+                    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                });
+            });
+
+            // --- Variant selection ---
+            let selectedVariant = product.variants?.[0] || null;
+            document.querySelectorAll('.variant-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.variant-option').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectedVariant = {
+                        id: btn.dataset.id,
+                        label: btn.dataset.label,
+                        price: btn.dataset.price
+                    };
+                    document.getElementById('product-price').textContent = selectedVariant.price;
+                });
+            });
+
+            // --- Quantity controls ---
+            let qty = 1;
+            document.getElementById('qty-minus').addEventListener('click', () => {
+                if (qty > 1) { qty--; document.getElementById('qty-value').textContent = qty; }
+            });
+            document.getElementById('qty-plus').addEventListener('click', () => {
+                if (qty < 10) { qty++; document.getElementById('qty-value').textContent = qty; }
+            });
+
+            // --- Add to Cart ---
+            document.getElementById('add-to-cart-btn').addEventListener('click', async () => {
+                const btn = document.getElementById('add-to-cart-btn');
+                if (!selectedVariant) {
+                    alert('Please select a size/variant.');
+                    return;
+                }
+                btn.textContent = 'Adding...';
+                btn.disabled = true;
+                await addToCart(product, selectedVariant.id, selectedVariant.label, qty);
+                btn.textContent = 'Added!';
+                setTimeout(() => {
+                    btn.textContent = 'Add to Cart';
+                    btn.disabled = false;
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
