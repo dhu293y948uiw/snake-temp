@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Cart</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="./collections.html">Collections</a></li>
+            <li><a href="./about.html">About</a></li>
+            <span id="nav-auth"></span>
+            <li>
+                <a href="./cart.html" class="cart-nav-link">
+                    Cart <span id="cart-count" class="cart-badge" style="display:none;">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="cart-section">
+        <h1 class="cart-title">Your Cart</h1>
+        <div id="cart-content">
+            <p class="loading-state">Loading cart...</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 SNAKE. All rights reserved. <a href="./Policies.html">Policies</a></p>
+    </div>
+
+    <script type="module">
+        import { getCart, getCartTotal, removeFromCart, updateQuantity } from "./js/cart.js";
+        import "./js/auth.js";
+
+        // Wait a tick for cart to load from Firebase/localStorage
+        setTimeout(renderCart, 500);
+
+        function renderCart() {
+            const content = document.getElementById('cart-content');
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                content.innerHTML = `
+                    <div class="cart-empty">
+                        <p>Your cart is empty.</p>
+                        <a href="./shop.html" class="buy-btn">Continue Shopping</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const itemsHTML = cart.map(item => `
+                <div class="cart-item" data-product="${item.productId}" data-variant="${item.variantId}">
+                    <img src="${item.image}" alt="${item.title}" class="cart-item-img" />
+                    <div class="cart-item-info">
+                        <h3>${item.title}</h3>
+                        <p class="cart-item-variant">${item.variantLabel}</p>
+                        <p class="cart-item-price">${item.price}</p>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="qty-btn minus" data-product="${item.productId}" data-variant="${item.variantId}">−</button>
+                        <span class="qty-value">${item.quantity}</span>
+                        <button class="qty-btn plus" data-product="${item.productId}" data-variant="${item.variantId}">+</button>
+                        <button class="remove-btn" data-product="${item.productId}" data-variant="${item.variantId}">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+
+            content.innerHTML = `
+                <div class="cart-items">${itemsHTML}</div>
+                <div class="cart-summary">
+                    <p class="cart-total">Total: <strong>$${getCartTotal()}</strong></p>
+                    <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+                </div>
+            `;
+
+            // Quantity & remove handlers
+            content.querySelectorAll('.minus').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const item = getCart().find(i => i.productId === btn.dataset.product && i.variantId === btn.dataset.variant);
+                    if (item) await updateQuantity(item.productId, item.variantId, item.quantity - 1);
+                    renderCart();
+                });
+            });
+
+            content.querySelectorAll('.plus').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const item = getCart().find(i => i.productId === btn.dataset.product && i.variantId === btn.dataset.variant);
+                    if (item) await updateQuantity(item.productId, item.variantId, item.quantity + 1);
+                    renderCart();
+                });
+            });
+
+            content.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await removeFromCart(btn.dataset.product, btn.dataset.variant);
+                    renderCart();
+                });
+            });
+
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                window.location.href = './checkout.html';
+            });
+        }
+    </script>
+</body>
+</html>
