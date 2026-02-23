@@ -812,3 +812,14 @@ footer a:hover {
         gap: 15px;
     }
 }
+.admin-nav-link {
+    color: #fff !important;
+    border: 1px solid #555;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.8em !important;
+    transition: border-color 0.3s !important;
+}
+.admin-nav-link:hover {
+    border-color: #fff !important;
+}
