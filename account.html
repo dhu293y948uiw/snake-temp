@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - My Account</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="./collections.html">Collections</a></li>
+            <li><a href="./about.html">About</a></li>
+            <span id="nav-auth"></span>
+        </ul>
+    </div>
+
+    <div class="account-section" id="account-content">
+        <p style="text-align:center; color:#555; padding: 60px;">Loading...</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 SNAKE. All rights reserved. <a href="./Policies.html">Policies</a></p>
+    </div>
+
+    <script type="module">
+        import { auth, db } from "./js/firebase.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import "./js/auth.js";
+
+        const content = document.getElementById('account-content');
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                content.innerHTML = `
+                    <div class="not-logged-in">
+                        <h2>You're not logged in</h2>
+                        <p>Please log in to view your account.</p>
+                        <button onclick="window.location.href='./index.html'">Go to Home</button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Fetch user data from Firestore
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            const userData = userDoc.exists() ? userDoc.data() : {};
+            const orders = userData.orders || [];
+
+            const ordersHTML = orders.length === 0
+                ? `<div class="no-orders">
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="./shop.html">Start shopping →</a>
+                   </div>`
+                : orders.map(order => `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span>Order #${order.id} &mdash; ${new Date(order.date).toLocaleDateString()}</span>
+                            <span class="order-status">${order.status}</span>
+                        </div>
+                        <div class="order-items">
+                            ${order.items.map(i => `<p>${i.title} &times; ${i.quantity}</p>`).join('')}
+                        </div>
+                        <p class="order-total">Total: ${order.total}</p>
+                    </div>
+                `).join('');
+
+            content.innerHTML = `
+                <div class="account-header">
+                    <h1>My Account</h1>
+                    <button id="logout-btn">Logout</button>
+                </div>
+                <div class="account-info">
+                    <p>Name: <span>${user.displayName || userData.name || 'N/A'}</span></p>
+                    <p>Email: <span>${user.email}</span></p>
+                    <p>Member since: <span>${userData.createdAt ? new Date(userData.createdAt.toDate()).toLocaleDateString() : 'N/A'}</span></p>
+                </div>
+                <div class="orders-section">
+                    <h2>Order History</h2>
+                    ${ordersHTML}
+                </div>
+            `;
+
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                await signOut(auth);
+                window.location.href = './index.html';
+            });
+        });
+    </script>
+</body>
+</html>
