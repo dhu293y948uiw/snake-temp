@@ -3,55 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnakeStrike - Collections</title>
+    <title>Snake - Collections</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div class="nav">
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="shop.html">Shop</a></li>
-            <li><a href="collections.html">Collections</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="./collections.html">Collections</a></li>
+            <li><a href="./about.html">About</a></li>
+            <span id="nav-auth"></span>
+            <li><a href="./cart.html" class="cart-nav-link">Cart <span id="cart-count" class="cart-badge" style="display:none;">0</span></a></li>
         </ul>
     </div>
     <div class="collections-header">
         <h1>Collections</h1>
         <p>Explore our curated streetwear drops.</p>
     </div>
+
+    <!--
+        Collections are loaded dynamically from Printify.
+        To group products into collections, add a tag in Printify like "collection:Venom Drop"
+        and the JS below will group them automatically.
+        If you'd prefer static collections, replace the script block with hardcoded HTML.
+    -->
     <div id="collections-container">
-    <p class="loading-state">Loading collections...</p>
-</div>
-<script src="./js/products.js"></script>
-<script>loadCollections('collections-container');</script>
-    <div class="footer">
-        <p>&copy; 2025 SnakeStrike. All rights reserved. <a href="#contact">Contact Us</a> | <a href="#terms">Terms</a></p>
+        <p class="loading-state">Loading collections...</p>
     </div>
+
+    <div class="footer">
+        <p>&copy; 2025 SNAKE. All rights reserved. <a href="#contact">Contact Us</a> | <a href="./Policies.html">Policies</a></p>
+    </div>
+    <script src="./js/products.js"></script>
     <script>
-        document.querySelectorAll('.carousel').forEach(carousel => {
-            const images = carousel.querySelectorAll('img');
-            const prevBtn = carousel.querySelector('.prev');
-            const nextBtn = carousel.querySelector('.next');
-            let currentIndex = 0;
-
-            function showImage(index) {
-                images.forEach((img, i) => {
-                    img.classList.toggle('active', i === index);
-                });
-            }
-
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                showImage(currentIndex);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                showImage(currentIndex);
-            });
-        });
+        loadCollections('collections-container');
     </script>
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/auth.js"></script>
 </body>
-
 </html>
-
