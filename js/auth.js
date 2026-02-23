@@ -18,16 +18,21 @@ import {
 
 // ---- Auth State ----
 // Runs on every page - updates nav to show login or account link
-onAuthStateChanged(auth, (user) => {
-    updateNav(user);
+onAuthStateChanged(auth, async (user) => {
+    await updateNav(user);
 });
 
-function updateNav(user) {
+async function updateNav(user) {
     const navAuth = document.getElementById('nav-auth');
     if (!navAuth) return;
 
     if (user) {
+        // Check if admin
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const isAdmin = userDoc.exists() && userDoc.data().isAdmin;
+
         navAuth.innerHTML = `
+            ${isAdmin ? '<a href="./admin.html" class="admin-nav-link">Admin Panel</a>' : ''}
             <a href="./account.html">${user.displayName || 'Account'}</a>
             <a href="#" id="logout-btn">Logout</a>
         `;
