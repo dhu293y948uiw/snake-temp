@@ -3,55 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnakeStrike - Shop</title>
+    <title>Snake - Shop</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div class="nav">
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="shop.html">Shop</a></li>
-            <li><a href="collections.html">Collections</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="./collections.html">Collections</a></li>
+            <li><a href="./about.html">About</a></li>
+            <span id="nav-auth"></span>
+            <li><a href="./cart.html" class="cart-nav-link">Cart <span id="cart-count" class="cart-badge" style="display:none;">0</span></a></li>
         </ul>
     </div>
     <div class="shop-header">
-        <h1>Shop SnakeStrike</h1>
+        <h1>Shop Snake</h1>
         <p>Browse our full range of streetwear essentials.</p>
     </div>
     <div class="product-grid" id="shop-grid">
-    <p class="loading-state">Loading products...</p>
-</div>
-<script src="./js/products.js"></script>
-<script>loadProducts('shop-grid');</script>
-    <div class="footer">
-        <p>&copy; 2025 SnakeStrike. All rights reserved. <a href="#contact">Contact Us</a> | <a href="#terms">Terms</a></p>
+        <p class="loading-state">Loading products...</p>
     </div>
+    <div class="footer">
+        <p>&copy; 2025 SNAKE. All rights reserved. <a href="#contact">Contact Us</a> | <a href="./Policies.html">Policies</a></p>
+    </div>
+    <script src="./js/products.js"></script>
     <script>
-        document.querySelectorAll('.carousel').forEach(carousel => {
-            const images = carousel.querySelectorAll('img');
-            const prevBtn = carousel.querySelector('.prev');
-            const nextBtn = carousel.querySelector('.next');
-            let currentIndex = 0;
-
-            function showImage(index) {
-                images.forEach((img, i) => {
-                    img.classList.toggle('active', i === index);
-                });
-            }
-
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                showImage(currentIndex);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                showImage(currentIndex);
-            });
-        });
+        loadProducts('shop-grid');
     </script>
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/auth.js"></script>
 </body>
-
 </html>
-
