@@ -823,3 +823,205 @@ footer a:hover {
 .admin-nav-link:hover {
     border-color: #fff !important;
 }
+.product-page-wrap {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+.product-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* ----- Gallery ----- */
+.product-gallery {
+    position: sticky;
+    top: 80px;
+}
+.gallery-main {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid #333;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background: #111;
+}
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.2s;
+}
+.gallery-thumbs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.gallery-thumb {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+.gallery-thumb:hover,
+.gallery-thumb.active {
+    border-color: #fff;
+    opacity: 1;
+}
+
+/* ----- Product Info ----- */
+.product-page-info {
+    padding-top: 10px;
+}
+.product-page-breadcrumb {
+    color: #666;
+    font-size: 0.85em;
+    margin-bottom: 15px;
+}
+.product-page-breadcrumb a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.product-page-breadcrumb a:hover { color: #fff; }
+
+.product-page-title {
+    font-size: 2.2em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+.product-page-price {
+    font-size: 1.6em;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+.product-page-label {
+    display: block;
+    color: #aaa;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+/* ----- Variant Options ----- */
+.product-page-variants {
+    margin-bottom: 25px;
+}
+.variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.variant-option {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 8px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s;
+}
+.variant-option:hover {
+    border-color: #888;
+    color: #fff;
+}
+.variant-option.active {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+    font-weight: bold;
+}
+
+/* ----- Quantity ----- */
+.product-page-qty {
+    margin-bottom: 25px;
+}
+.qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ----- Buttons ----- */
+.product-add-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 12px;
+}
+.product-add-btn:hover { background: #ddd; }
+.product-add-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+
+.product-view-cart-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: none;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 0.95em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 30px;
+}
+.product-view-cart-btn:hover { border-color: #fff; }
+
+/* ----- Description ----- */
+.product-page-description {
+    border-top: 1px solid #333;
+    padding-top: 25px;
+}
+.product-page-description h3 {
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #aaa;
+    margin-bottom: 12px;
+}
+.product-page-description p {
+    color: #ccc;
+    line-height: 1.7;
+    font-size: 0.95em;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+    .product-page {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .product-gallery {
+        position: static;
+    }
+    .product-page-title {
+        font-size: 1.6em;
+    }
+}
