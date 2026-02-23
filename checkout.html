@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Checkout</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="./collections.html">Collections</a></li>
+            <li><a href="./about.html">About</a></li>
+        </ul>
+        <div class="nav-right">
+            <span id="nav-auth"></span>
+            <a href="./cart.html" class="cart-nav-link">Cart <span id="cart-count" class="cart-badge" style="display:none;">0</span></a>
+        </div>
+    </div>
+
+    <div class="checkout-section">
+        <div class="checkout-grid">
+
+            <!-- Left: Shipping Form -->
+            <div class="checkout-form-wrap">
+                <h2 class="checkout-heading">Shipping Details</h2>
+                <div id="checkout-form-area">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="first-name" placeholder="John" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="last-name" placeholder="Doe" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="checkout-email" placeholder="you@email.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Address Line 1</label>
+                        <input type="text" id="address1" placeholder="123 Main St" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Address Line 2 (optional)</label>
+                        <input type="text" id="address2" placeholder="Apt, Suite, etc." />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" id="city" placeholder="New York" required />
+                        </div>
+                        <div class="form-group">
+                            <label>State / Province</label>
+                            <input type="text" id="region" placeholder="NY" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Zip / Postal Code</label>
+                            <input type="text" id="zip" placeholder="10001" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Country Code</label>
+                            <input type="text" id="country" placeholder="US" maxlength="2" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone (optional)</label>
+                        <input type="tel" id="phone" placeholder="+1 555 000 0000" />
+                    </div>
+                    <p id="checkout-error" class="checkout-error"></p>
+                    <button id="place-order-btn" class="checkout-btn">Place Order</button>
+                </div>
+            </div>
+
+            <!-- Right: Order Summary -->
+            <div class="order-summary-wrap">
+                <h2 class="checkout-heading">Order Summary</h2>
+                <div id="order-summary-items">
+                    <p class="loading-state">Loading...</p>
+                </div>
+                <div class="order-summary-total" id="order-summary-total" style="display:none;">
+                    <p>Total: <strong id="summary-total-amount"></strong></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 SNAKE. All rights reserved. <a href="./Policies.html">Policies</a></p>
+    </div>
+
+    <script type="module">
+        import { auth, db } from "./js/firebase.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, updateDoc, arrayUnion, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getCart, getCartTotal, getCartCount } from "./js/cart.js";
+        import "./js/auth.js";
+
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('checkout-email').value = user.email || '';
+            }
+        });
+
+        // Render order summary after cart loads
+        setTimeout(() => {
+            const cart = getCart();
+            const summaryEl = document.getElementById('order-summary-items');
+            const totalEl = document.getElementById('order-summary-total');
+            const totalAmount = document.getElementById('summary-total-amount');
+
+            if (cart.length === 0) {
+                summaryEl.innerHTML = '<p class="loading-state">Your cart is empty.</p>';
+                document.getElementById('place-order-btn').disabled = true;
+                return;
+            }
+
+            summaryEl.innerHTML = cart.map(item => `
+                <div class="summary-item">
+                    <img src="${item.image}" alt="${item.title}" class="summary-item-img" />
+                    <div class="summary-item-info">
+                        <p class="summary-item-title">${item.title}</p>
+                        <p class="summary-item-variant">${item.variantLabel} &times; ${item.quantity}</p>
+                    </div>
+                    <p class="summary-item-price">${item.price}</p>
+                </div>
+            `).join('');
+
+            totalAmount.textContent = `$${getCartTotal()}`;
+            totalEl.style.display = 'block';
+        }, 600);
+
+        // Place order
+        document.getElementById('place-order-btn').addEventListener('click', async () => {
+            const errorEl = document.getElementById('checkout-error');
+            errorEl.textContent = '';
+
+            const firstName = document.getElementById('first-name').value.trim();
+            const lastName = document.getElementById('last-name').value.trim();
+            const email = document.getElementById('checkout-email').value.trim();
+            const address1 = document.getElementById('address1').value.trim();
+            const address2 = document.getElementById('address2').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const region = document.getElementById('region').value.trim();
+            const zip = document.getElementById('zip').value.trim();
+            const country = document.getElementById('country').value.trim().toUpperCase();
+            const phone = document.getElementById('phone').value.trim();
+
+            if (!firstName || !lastName || !email || !address1 || !city || !region || !zip || !country) {
+                errorEl.textContent = 'Please fill in all required fields.';
+                return;
+            }
+
+            const cart = getCart();
+            if (cart.length === 0) {
+                errorEl.textContent = 'Your cart is empty.';
+                return;
+            }
+
+            const btn = document.getElementById('place-order-btn');
+            btn.textContent = 'Placing Order...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        shipping: { firstName, lastName, email, address1, address2, city, region, zip, country, phone },
+                        items: cart
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    errorEl.textContent = result.error || 'Order failed. Please try again.';
+                    btn.textContent = 'Place Order';
+                    btn.disabled = false;
+                    return;
+                }
+
+                // Save order to Firestore if logged in
+                if (currentUser) {
+                    const order = {
+                        id: result.orderId,
+                        date: new Date().toISOString(),
+                        status: 'Processing',
+                        items: cart.map(i => ({ title: i.title, quantity: i.quantity, variant: i.variantLabel })),
+                        total: `$${getCartTotal()}`
+                    };
+                    await updateDoc(doc(db, 'users', currentUser.uid), {
+                        orders: arrayUnion(order)
+                    });
+                }
+
+                // Clear cart
+                const { clearCart } = await import('./js/cart.js');
+                await clearCart();
+
+                // Redirect to confirmation
+                window.location.href = './order-confirm.html?id=' + result.orderId;
+
+            } catch (err) {
+                console.error(err);
+                errorEl.textContent = 'Something went wrong. Please try again.';
+                btn.textContent = 'Place Order';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
