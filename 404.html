@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Page Not Found</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .not-found-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .not-found-code {
+            font-size: 8em;
+            font-weight: bold;
+            color: #1a1a1a;
+            line-height: 1;
+            margin-bottom: 10px;
+            letter-spacing: -4px;
+        }
+        .not-found-title {
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .not-found-msg {
+            color: #555;
+            font-size: 1em;
+            margin-bottom: 35px;
+        }
+        .not-found-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="./collections.html">Collections</a></li>
+            <li><a href="./about.html">About</a></li>
+        </ul>
+        <div class="nav-right">
+            <li id="nav-auth" style="list-style:none;"></li>
+            <a href="./cart.html" class="cart-nav-link">Cart <span id="cart-count" class="cart-badge" style="display:none;">0</span></a>
+        </div>
+    </div>
+
+    <div class="not-found-section">
+        <div class="not-found-code">404</div>
+        <h1 class="not-found-title">Page Not Found</h1>
+        <p class="not-found-msg">Looks like this page slithered away.</p>
+        <div class="not-found-actions">
+            <a href="./index.html" class="checkout-btn" style="text-decoration:none; display:inline-block; padding: 14px 30px;">Go Home</a>
+            <a href="./shop.html" class="buy-btn" style="text-decoration:none; display:inline-block; padding: 14px 30px;">Shop Now</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 SNAKE. All rights reserved. <a href="./Policies.html">Policies</a></p>
+    </div>
+
+    <script type="module" src="./js/auth.js"></script>
+</body>
+</html>
