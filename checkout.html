@@ -100,7 +100,7 @@
         import { auth, db } from "./js/firebase.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { doc, updateDoc, arrayUnion, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getCart, getCartTotal, getCartCount } from "./js/cart.js";
+        import { getCart, getCartTotal, getCartCount, cartReady } from "./js/cart.js";
         import "./js/auth.js";
 
         let currentUser = null;
@@ -113,7 +113,7 @@
         });
 
         // Render order summary after cart loads
-        setTimeout(() => {
+        cartReady.then(() => {
             const cart = getCart();
             const summaryEl = document.getElementById('order-summary-items');
             const totalEl = document.getElementById('order-summary-total');
