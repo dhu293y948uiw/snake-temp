@@ -9,6 +9,10 @@ import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebase
 let cart = [];
 let currentUser = null;
 
+// Promise that resolves when cart is fully loaded
+let cartReadyResolve;
+export const cartReady = new Promise(resolve => { cartReadyResolve = resolve; });
+
 // Listen for auth state - load cart from Firebase when logged in
 onAuthStateChanged(auth, async (user) => {
     currentUser = user;
@@ -20,6 +24,7 @@ onAuthStateChanged(auth, async (user) => {
         cart = saved ? JSON.parse(saved) : [];
     }
     updateCartIcon();
+    cartReadyResolve(); // Signal that cart is ready
 });
 
 // ---- Load / Save ----
@@ -119,4 +124,10 @@ function showCartNotification(title) {
     notif.textContent = `✓ ${title} added to cart`;
     notif.classList.add('show');
     setTimeout(() => notif.classList.remove('show'), 2500);
+}
+
+export async function clearCart() {
+    cart = [];
+    await saveCart();
+    updateCartIcon();
 }
