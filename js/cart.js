@@ -17,7 +17,27 @@ export const cartReady = new Promise(resolve => { cartReadyResolve = resolve; })
 onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     if (user) {
+        // Check for guest cart to merge
+        const guestCartRaw = localStorage.getItem('snake-cart');
+        const guestCart = guestCartRaw ? JSON.parse(guestCartRaw) : [];
+
         await loadCartFromFirebase(user.uid);
+
+        // Merge guest cart into Firebase cart
+        if (guestCart.length > 0) {
+            guestCart.forEach(guestItem => {
+                const existing = cart.findIndex(
+                    i => i.productId === guestItem.productId && i.variantId === guestItem.variantId
+                );
+                if (existing > -1) {
+                    cart[existing].quantity += guestItem.quantity;
+                } else {
+                    cart.push(guestItem);
+                }
+            });
+            localStorage.removeItem('snake-cart'); // Clear guest cart
+            await saveCart();
+        }
     } else {
         // Load from localStorage for guests
         const saved = localStorage.getItem('snake-cart');
