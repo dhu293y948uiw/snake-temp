@@ -32,11 +32,11 @@
     </div>
 
     <script type="module">
-        import { getCart, getCartTotal, removeFromCart, updateQuantity } from "./js/cart.js";
+        import { getCart, getCartTotal, removeFromCart, updateQuantity, cartReady } from "./js/cart.js";
         import "./js/auth.js";
 
-        // Wait a tick for cart to load from Firebase/localStorage
-        setTimeout(renderCart, 500);
+        // Wait for cart to fully load from Firebase/localStorage before rendering
+        cartReady.then(renderCart);
 
         function renderCart() {
             const content = document.getElementById('cart-content');
