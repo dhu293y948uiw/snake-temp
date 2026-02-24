@@ -30,6 +30,13 @@ async function updateNav(user) {
         // Check if admin
         const userDoc = await getDoc(doc(db, 'users', user.uid));
         const isAdmin = userDoc.exists() && userDoc.data().isAdmin;
+        const isBanned = userDoc.exists() && userDoc.data().banned;
+
+        if (isBanned) {
+            await signOut(auth);
+            navAuth.innerHTML = '<a href="#" style="color:#e55;">Account Banned</a>';
+            return;
+        }
 
         navAuth.innerHTML = `
             ${isAdmin ? '<a href="./admin.html" class="admin-nav-link">Admin Panel</a>' : ''}
